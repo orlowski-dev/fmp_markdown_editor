@@ -1,0 +1,11 @@
+@import url("./colors.css");
+
+* {
+  box-sizing: border-box;
+  font-family: var(--roboto), system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
