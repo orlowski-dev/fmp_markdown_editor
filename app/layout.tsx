@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto, Roboto_Slab } from "next/font/google";
 import "@/assets/styles/globals.css";
+import { CustomThemeProvider } from "./providers";
 
 const roboto = Roboto({
   subsets: ["latin-ext"],
@@ -26,9 +27,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.variable} ${robotoSlab.variable}`}>
-        {children}
+        <CustomThemeProvider> {children}</CustomThemeProvider>
       </body>
     </html>
   );

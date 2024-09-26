@@ -1,0 +1,55 @@
+.theme-toggler {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.theme-toggler .active svg,
+.theme-toggler .inactive svg {
+  width: 18px;
+  height: 18px;
+}
+
+.theme-toggler .active,
+.theme-toggler .inactive {
+  transition: color 0.1s ease-in;
+  width: 18px;
+  height: 18px;
+}
+
+.theme-toggler .active {
+  color: var(--color-100);
+}
+
+.theme-toggler .inactive {
+  color: var(--color-600);
+}
+
+.theme-toggler .indicator-area {
+  width: 48px;
+  height: 24px;
+  background-color: var(--color-600);
+  border-radius: 999px;
+  position: relative;
+}
+
+.theme-toggler .indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--color-100);
+  transition: left 0.1s ease-in;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
+
+.theme-toggler.dark .indicator {
+  left: 6px;
+}
+
+.theme-toggler.light .indicator {
+  left: 30px;
+}

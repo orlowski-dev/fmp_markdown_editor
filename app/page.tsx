@@ -1,4 +1,4 @@
-import { Button } from "@/components";
+import { Button, ThemeToggler } from "@/components";
 import { SaveIcon } from "@/components/icons";
 
 const App = () => {
@@ -29,6 +29,16 @@ const App = () => {
         <Button color="dark" variant="icon-only" startIcon={<SaveIcon />}>
           Desc text
         </Button>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          gap: 24,
+          padding: 24,
+          backgroundColor: "var(--color-900)",
+        }}
+      >
+        <ThemeToggler />
       </div>
     </>
   );
