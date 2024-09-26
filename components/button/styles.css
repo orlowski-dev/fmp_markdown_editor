@@ -1,0 +1,56 @@
+.btn {
+  border: none;
+  border-radius: 4px;
+  font-size: 0.938rem;
+  color: var(--color-100);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.1s ease-in;
+  padding: 10px 16px;
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn.orange {
+  background-color: var(--color-orange);
+}
+
+.btn.orange:hover {
+  background-color: var(--color-orange-hover);
+}
+
+.btn.dark {
+  background-color: var(--color-800);
+}
+
+.btn.dark:hover {
+  background-color: var(--color-600);
+}
+
+.btn.icon-only-mobile,
+.btn.icon-only {
+  padding: 10px;
+}
+
+.btn.icon-only-mobile span,
+.btn.icon-only span {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .btn.icon-only-mobile {
+    padding: 10px 16px;
+  }
+  .btn.icon-only-mobile span {
+    display: inline;
+  }
+}
