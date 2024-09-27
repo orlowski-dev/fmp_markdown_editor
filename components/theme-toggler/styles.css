@@ -8,15 +8,15 @@
 
 .theme-toggler .active svg,
 .theme-toggler .inactive svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 .theme-toggler .active,
 .theme-toggler .inactive {
   transition: color 0.1s ease-in;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 .theme-toggler .active {

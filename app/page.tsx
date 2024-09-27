@@ -1,4 +1,6 @@
-import { Button, ThemeToggler } from "@/components";
+"use client";
+
+import { Button, FileRenamer, ThemeToggler } from "@/components";
 import { SaveIcon } from "@/components/icons";
 
 const App = () => {
@@ -39,6 +41,19 @@ const App = () => {
         }}
       >
         <ThemeToggler />
+      </div>
+      <div
+        style={{
+          display: "flex",
+          gap: 24,
+          padding: 24,
+          backgroundColor: "var(--color-900)",
+        }}
+      >
+        <FileRenamer
+          defValue="Welcome to Markdown.md"
+          onValidFileName={() => {}}
+        />
       </div>
     </>
   );

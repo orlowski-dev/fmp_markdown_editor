@@ -1,0 +1,55 @@
+.file-renamer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-renamer .input-area {
+  display: flex;
+  gap: 2px;
+  flex-flow: column;
+}
+
+.file-renamer .icon {
+  display: inline-block;
+  color: var(--color-100);
+  width: 22px;
+  height: 22px;
+}
+
+.file-renamer .icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.file-renamer .input-area label {
+  font-size: 0.813rem;
+  font-weight: 300;
+  color: var(--color-500);
+  display: none;
+}
+
+.file-renamer .input-area input {
+  border: none;
+  border: 1px solid transparent;
+  transition: border-bottom-color 0.1s ease-in;
+  outline: none;
+  padding: 4px 0;
+  background: none;
+  color: var(--color-100);
+  font-size: 0.938rem;
+}
+
+.file-renamer .input-area input.valid:focus {
+  border-bottom-color: var(--color-100);
+}
+
+.file-renamer .input-area .invalid {
+  border-bottom-color: var(--color-alert);
+}
+
+@media screen and (min-width: 768px) {
+  .file-renamer .input-area label {
+    display: block;
+  }
+}
