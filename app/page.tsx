@@ -1,62 +1,7 @@
-"use client";
-
-import { Button, FileRenamer, ThemeToggler } from "@/components";
-import { SaveIcon } from "@/components/icons";
+import { AppView } from "@/components/views";
 
 const App = () => {
-  return (
-    <>
-      <div style={{ display: "flex", gap: 24, padding: 24 }}>
-        <Button>Iconless button</Button>
-        <Button startIcon={<SaveIcon />}>Save document</Button>
-        <Button variant="icon-only-mobile" startIcon={<SaveIcon />}>
-          Only icon on mobile
-        </Button>
-        <Button variant="icon-only" startIcon={<SaveIcon />}>
-          Desc text
-        </Button>
-      </div>
-      <div style={{ display: "flex", gap: 24, padding: 24 }}>
-        <Button color="dark">Iconless button</Button>
-        <Button color="dark" startIcon={<SaveIcon />}>
-          Save document
-        </Button>
-        <Button
-          color="dark"
-          variant="icon-only-mobile"
-          startIcon={<SaveIcon />}
-        >
-          Only icon on mobile
-        </Button>
-        <Button color="dark" variant="icon-only" startIcon={<SaveIcon />}>
-          Desc text
-        </Button>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          gap: 24,
-          padding: 24,
-          backgroundColor: "var(--color-900)",
-        }}
-      >
-        <ThemeToggler />
-      </div>
-      <div
-        style={{
-          display: "flex",
-          gap: 24,
-          padding: 24,
-          backgroundColor: "var(--color-900)",
-        }}
-      >
-        <FileRenamer
-          defValue="Welcome to Markdown.md"
-          onValidFileName={() => {}}
-        />
-      </div>
-    </>
-  );
+  return <AppView />;
 };
 
 export default App;
