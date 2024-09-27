@@ -33,7 +33,7 @@
 }
 
 .btn.dark:hover {
-  background-color: var(--color-600);
+  background-color: var(--color-700);
 }
 
 .btn.icon-only-mobile,

@@ -116,3 +116,53 @@ export const Logo = () => (
     />
   </svg>
 );
+
+export const CloseIcon = () => (
+  <svg
+    width="23"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M3.25 2L21.6348 20.3848L20.2206 21.799L1.83579 3.41421L3.25 2Z"
+      fill="currentColor"
+    />
+    <path
+      d="M2 20.75L20.3848 2.36522L21.799 3.77944L3.41421 22.1642L2 20.75Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+export const MenuIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect x="2" y="3" width="20" height="2" fill="currentColor" />
+    <rect x="2" y="11" width="20" height="2" fill="currentColor" />
+    <rect x="2" y="19" width="20" height="2" fill="currentColor" />
+  </svg>
+);
+
+export const TrashIcon = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M20 6H16V5C16 3.34315 14.6569 2 13 2H11C9.34315 2 8 3.34315 8 5V6H4C3.44772 6 3 6.44772 3 7C3 7.55228 3.44772 8 4 8H5V19C5 20.6569 6.34315 22 8 22H16C17.6569 22 19 20.6569 19 19V8H20C20.5523 8 21 7.55228 21 7C21 6.44772 20.5523 6 20 6ZM10 18C10.5523 18 11 17.5523 11 17V11C11 10.4477 10.5523 10 10 10C9.44772 10 9 10.4477 9 11V17C9 17.5523 9.44772 18 10 18ZM11 4C10.4477 4 10 4.44772 10 5V6H14V5C14 4.44772 13.5523 4 13 4H11ZM17 19C17 19.5523 16.5523 20 16 20H8C7.44772 20 7 19.5523 7 19V8H17V19ZM15 17C15 17.5523 14.5523 18 14 18C13.4477 18 13 17.5523 13 17V11C13 10.4477 13.4477 10 14 10C14.5523 10 15 10.4477 15 11V17Z"
+      fill="currentColor"
+    />
+  </svg>
+);
