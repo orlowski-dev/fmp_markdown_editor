@@ -40,6 +40,20 @@ body {
   transition: background-color 0.1s ease-in;
 }
 
+.main-wrapper .separator,
+.main-wrapper .preview-window {
+  display: none;
+}
+
+.main-wrapper.only-preview .separator,
+.main-wrapper.only-preview .editor-window {
+  display: none;
+}
+
+.main-wrapper.only-preview .preview-window {
+  display: unset;
+}
+
 html.dark .app-view .content .main-wrapper .separator {
   background-color: var(--color-600);
 }
@@ -47,5 +61,14 @@ html.dark .app-view .content .main-wrapper .separator {
 @media screen and (min-width: 768px) {
   .app-view .content .main-wrapper {
     grid-template-columns: 1fr 1px 1fr;
+  }
+
+  .app-view .content .main-wrapper.only-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .main-wrapper .separator,
+  .main-wrapper .preview-window {
+    display: unset;
   }
 }
