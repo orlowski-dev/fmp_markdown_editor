@@ -24,4 +24,28 @@ body {
   max-height: 100vh;
   overflow-y: auto;
   width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: min-content auto;
+}
+
+.app-view .content .main-wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.app-view .content .main-wrapper .separator {
+  background-color: var(--color-500);
+  transition: background-color 0.1s ease-in;
+}
+
+html.dark .app-view .content .main-wrapper .separator {
+  background-color: var(--color-600);
+}
+
+@media screen and (min-width: 768px) {
+  .app-view .content .main-wrapper {
+    grid-template-columns: 1fr 1px 1fr;
+  }
 }

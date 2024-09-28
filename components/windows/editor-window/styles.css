@@ -1,0 +1,17 @@
+.editor-textarea {
+  border: none;
+  margin: 0;
+  resize: none;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  font-family: var(--roboto-mono), monospace;
+  padding: 10px;
+  background: none;
+  outline: none;
+}
+
+@media screen and (min-width: 768px) {
+  .editor-window header button {
+    display: none;
+  }
+}

@@ -38,6 +38,7 @@
   background: none;
   color: var(--color-100);
   font-size: 0.938rem;
+  width: 100%;
 }
 
 .file-renamer .input-area input.valid:focus {
