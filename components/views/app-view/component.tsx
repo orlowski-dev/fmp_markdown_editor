@@ -2,41 +2,57 @@
 
 import { Sidebar } from "@/components/view-elements/sidebar";
 import { AppHeader } from "@/components/view-elements";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef } from "react";
 import { EditorWindow, PreviewWindow } from "@/components/windows";
+import { appViewReducer } from "@/reducers";
+import { useLocalStorage } from "@/hooks";
+import { welcomeDocs } from "@/data/def-data";
 import "./styles.css";
 
 const AppView = () => {
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
-  const [previewOnly, setPreviewOnly] = useState(false);
+  const [states, dispatch] = useReducer(appViewReducer, {
+    isSidebarVisible: false,
+    previewOnly: false,
+    documents: [],
+  });
   const editorContentRef = useRef<HTMLTextAreaElement>(null);
   const mainWrapperRef = useRef<HTMLDivElement>(null);
+  const { value } = useLocalStorage("docs", welcomeDocs);
+
+  // set states.document on localStorage load
+  useEffect(() => {
+    if (states.documents.length > 0) return;
+    dispatch({ name: "setDocuments", payloadSet: value });
+  }, [states.documents, value]);
 
   const toggleSidebarCallback = useCallback(() => {
-    setIsSidebarVisible((prev) => !prev);
-  }, []);
+    dispatch({
+      name: "setIsSidebarVisible",
+      payloadSet: !states.isSidebarVisible,
+    });
+  }, [states.isSidebarVisible]);
 
   const addClassPreviewOnly = () => {
     if (!mainWrapperRef.current) return;
 
     mainWrapperRef.current.classList.add("only-preview");
-    setPreviewOnly(true);
+    dispatch({ name: "setPreviewOnly", payloadSet: true });
   };
 
   const removeClassPreviewOnly = () => {
     if (!mainWrapperRef.current) return;
 
     mainWrapperRef.current.classList.remove("only-preview");
-    setPreviewOnly(false);
+    dispatch({ name: "setPreviewOnly", payloadSet: false });
   };
 
   return (
-    <div className={`app-view ${isSidebarVisible ? "sv" : "si"} `}>
-      <Sidebar />
+    <div className={`app-view ${states.isSidebarVisible ? "sv" : "si"} `}>
+      <Sidebar docs={states.documents} />
       <div className="content">
         <AppHeader
           onToggle={toggleSidebarCallback}
-          isSidebarVisible={isSidebarVisible}
+          isSidebarVisible={states.isSidebarVisible}
         />
         <div className="main-wrapper" ref={mainWrapperRef}>
           <EditorWindow
@@ -46,10 +62,10 @@ const AppView = () => {
           <div className="separator"></div>
           <PreviewWindow
             onHeaderBtnClick={() => {
-              if (previewOnly) removeClassPreviewOnly();
+              if (states.previewOnly) removeClassPreviewOnly();
               else addClassPreviewOnly();
             }}
-            buttonEvent={previewOnly ? "close-preview" : "only-preview"}
+            buttonEvent={states.previewOnly ? "close-preview" : "only-preview"}
           />
         </div>
       </div>

@@ -1,10 +1,15 @@
 import { FileIcon, Logo } from "@/components/icons";
-import "./styles.css";
 import { ThemeToggler } from "@/components/theme-toggler";
 import { Button } from "@/components/button";
 import Link from "next/link";
+import { MdDocument } from "@/data/types";
+import "./styles.css";
 
-const Sidebar = () => {
+export interface SidebarProps {
+  docs: MdDocument[];
+}
+
+const Sidebar = ({ docs }: SidebarProps) => {
   return (
     <div className="sidebar">
       <div className="logo-area">
@@ -14,15 +19,25 @@ const Sidebar = () => {
       <Button>+ New document</Button>
       <div className="docs-area-wrapper">
         <div className="docs-area">
-          <Link href={`#`} className="doc">
-            <span className="icon">
-              <FileIcon />
-            </span>
-            <div className="details">
-              <span>01 April 2022</span>
-              <p>untitled-document.md</p>
-            </div>
-          </Link>
+          {docs.map((doc) => {
+            return (
+              <Link key={doc.id} href={`/?doc=${doc.id}`} className="doc">
+                <span className="icon">
+                  <FileIcon />
+                </span>
+                <div className="details">
+                  <span>
+                    {new Date(doc.createdAt).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </span>
+                  <p>{doc.name}</p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
       <ThemeToggler />
