@@ -18,6 +18,7 @@ const AppView = () => {
     previewOnly: false,
     documents: [],
     currentDocument: undefined,
+    currentDocumentTempContent: undefined,
   });
   const editorContentRef = useRef<HTMLTextAreaElement>(null);
   const mainWrapperRef = useRef<HTMLDivElement>(null);
@@ -30,7 +31,7 @@ const AppView = () => {
   useEffect(() => {
     // set states.document on localStorage load
     if (isReady && !lastDocumentsRef.current) {
-      dispatch({ name: "setDocuments", payloadSet: value });
+      dispatch({ name: "setDocuments", payload: value });
       lastDocumentsRef.current = states.documents;
       return;
     }
@@ -49,7 +50,7 @@ const AppView = () => {
   // set current document
   useEffect(() => {
     if (isReady && spDocId) {
-      dispatch({ name: "setCurrentDocument", payload: spDocId });
+      dispatch({ name: "setCurrentDocument", payload: Number(spDocId) });
       return;
     }
     if (isReady && !spDocId && value) {
@@ -60,7 +61,7 @@ const AppView = () => {
   const toggleSidebarCallback = useCallback(() => {
     dispatch({
       name: "setIsSidebarVisible",
-      payloadSet: !states.isSidebarVisible,
+      payload: !states.isSidebarVisible,
     });
   }, [states.isSidebarVisible]);
 
@@ -68,22 +69,33 @@ const AppView = () => {
     if (!mainWrapperRef.current) return;
 
     mainWrapperRef.current.classList.add("only-preview");
-    dispatch({ name: "setPreviewOnly", payloadSet: true });
+    dispatch({ name: "setPreviewOnly", payload: true });
   };
 
   const removeClassPreviewOnly = () => {
     if (!mainWrapperRef.current) return;
 
     mainWrapperRef.current.classList.remove("only-preview");
-    dispatch({ name: "setPreviewOnly", payloadSet: false });
+    dispatch({ name: "setPreviewOnly", payload: false });
   };
 
-  const onFileNameChange = useCallback(
+  const handleOnFileNameChange = useCallback(
     (fileName: string) => {
       dispatch({ name: "setCurrentDocumentName", payload: fileName });
     },
     [dispatch],
   );
+
+  const handleOnEditorContentChange = useCallback(
+    (newContent: string) => {
+      dispatch({ name: "setDocumentTempContent", payload: newContent });
+    },
+    [dispatch],
+  );
+
+  const handleOnSaveBtnClick = useCallback(() => {
+    dispatch({ name: "saveDocumentTempContent" });
+  }, [dispatch]);
 
   return (
     <div className={`app-view ${states.isSidebarVisible ? "sv" : "si"} `}>
@@ -92,18 +104,21 @@ const AppView = () => {
         <AppHeader
           currentDocument={states.currentDocument}
           onToggle={toggleSidebarCallback}
-          onValidFileName={onFileNameChange}
+          onValidFileName={handleOnFileNameChange}
           isSidebarVisible={states.isSidebarVisible}
+          onSaveBtnClick={handleOnSaveBtnClick}
         />
         {states.currentDocument ? (
           <div className="main-wrapper" ref={mainWrapperRef}>
             <EditorWindow
               ref={editorContentRef}
-              content={states.currentDocument.content}
+              defContent={states.currentDocument.content}
+              onContentChange={handleOnEditorContentChange}
               onHeaderBtnClick={addClassPreviewOnly}
             />
             <div className="separator"></div>
             <PreviewWindow
+              content={states.currentDocumentTempContent}
               onHeaderBtnClick={() => {
                 if (states.previewOnly) removeClassPreviewOnly();
                 else addClassPreviewOnly();
@@ -113,7 +128,9 @@ const AppView = () => {
               }
             />
           </div>
-        ) : undefined}
+        ) : (
+          <div>Document not found!</div>
+        )}
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ export interface AppHeaderProps {
   onToggle: () => void;
   currentDocument: MdDocument | undefined;
   onValidFileName: (fileName: string) => void;
+  onSaveBtnClick: () => void;
 }
 
 const AppHeader = ({
@@ -24,6 +25,7 @@ const AppHeader = ({
   onToggle,
   currentDocument,
   onValidFileName,
+  onSaveBtnClick,
 }: AppHeaderProps) => {
   return (
     <header className="app-header">
@@ -52,7 +54,11 @@ const AppHeader = ({
         >
           Remove document
         </Button>
-        <Button variant="icon-only-mobile" startIcon={<SaveIcon />}>
+        <Button
+          variant="icon-only-mobile"
+          startIcon={<SaveIcon />}
+          onClick={onSaveBtnClick}
+        >
           Save Changes
         </Button>
       </div>

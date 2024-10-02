@@ -7,18 +7,20 @@ import "./styles.css";
 
 export interface EditorWindowProps {
   onHeaderBtnClick: () => void;
-  content: string;
+  defContent: string;
+  onContentChange: (newContent: string) => void;
 }
 
 const EditorWindow = forwardRef(function EditorWindow(
-  { onHeaderBtnClick, content }: EditorWindowProps,
+  { onHeaderBtnClick, defContent, onContentChange }: EditorWindowProps,
   ref: ForwardedRef<HTMLTextAreaElement>,
 ) {
-  const [inpValue, setInpValue] = useState(content);
+  const [inpValue, setInpValue] = useState(defContent);
 
+  // when current document change, the defContent also change
   useEffect(() => {
-    setInpValue(content);
-  }, [content]);
+    setInpValue(defContent);
+  }, [defContent]);
 
   return (
     <Window
@@ -26,7 +28,7 @@ const EditorWindow = forwardRef(function EditorWindow(
       windowClassName="editor-window"
       headerButton={<button onClick={onHeaderBtnClick}>{<EyeIcon />}</button>}
     >
-      {!content ? (
+      {!inpValue ? (
         <div className="no-content">Loading document..</div>
       ) : (
         <textarea
@@ -35,6 +37,7 @@ const EditorWindow = forwardRef(function EditorWindow(
           value={inpValue}
           onChange={(e) => {
             setInpValue(e.target.value);
+            onContentChange(e.target.value);
           }}
         ></textarea>
       )}

@@ -7,11 +7,13 @@ import "./styles.css";
 export interface PreviewWindowProps {
   onHeaderBtnClick: () => void;
   buttonEvent: "only-preview" | "close-preview";
+  content: string | undefined;
 }
 
 const PreviewWindow = ({
   onHeaderBtnClick,
   buttonEvent,
+  content,
 }: PreviewWindowProps) => {
   return (
     <Window
@@ -24,7 +26,7 @@ const PreviewWindow = ({
       }
     >
       <div className="preview-wrapper">
-        <div className="preview">this is preview</div>
+        {content ? <div className="preview">{content}</div> : undefined}
       </div>
     </Window>
   );
