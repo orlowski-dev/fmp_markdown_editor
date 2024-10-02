@@ -6,10 +6,15 @@ interface AppViewReducerStates {
   documents: MdDocument[];
   currentDocument: MdDocument | undefined;
   currentDocumentTempContent: string | undefined;
+  isModalVisible: boolean;
 }
 
 type BooleanTypeActions = {
-  name: "setIsSidebarVisible" | "setPreviewOnly";
+  name:
+    | "setIsSidebarVisible"
+    | "setPreviewOnly"
+    | "setIsModalVisible"
+    | "removeDocument";
   payload: boolean;
 };
 
@@ -169,7 +174,26 @@ const appViewReducer = (
 
       const updatedDocs = [newDoc, ...states.documents];
 
-      return { ...states, documents: updatedDocs, currentDocument: newDoc };
+      return { ...states, documents: updatedDocs };
+
+    case "setIsModalVisible":
+      return { ...states, isModalVisible: action.payload };
+
+    case "removeDocument":
+      // payload controls modal visibility => as `closeModal`, if payload is `true` then isModalVisible will be false
+
+      if (!states.currentDocument) {
+        throw new Error("Current document does not exist in the reducer");
+      }
+
+      return {
+        ...states,
+        documents: states.documents.filter(
+          (doc) => doc.id !== states.currentDocument!.id,
+        ),
+        isModalVisible: !action.payload,
+        currentDocument: undefined,
+      };
 
     default:
       return states;

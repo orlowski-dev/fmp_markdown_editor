@@ -9,6 +9,7 @@ import { useLocalStorage } from "@/hooks";
 import { welcomeDocs } from "@/data/def-data";
 import { useSearchParams } from "next/navigation";
 import { MdDocument } from "@/data/types";
+import { Modal } from "@/components/modal";
 import "./styles.css";
 
 const AppView = () => {
@@ -19,6 +20,7 @@ const AppView = () => {
     documents: [],
     currentDocument: undefined,
     currentDocumentTempContent: undefined,
+    isModalVisible: false,
   });
   const editorContentRef = useRef<HTMLTextAreaElement>(null);
   const mainWrapperRef = useRef<HTMLDivElement>(null);
@@ -101,47 +103,71 @@ const AppView = () => {
     dispatch({ name: "createNewDocument", payload: "New document.md" });
   }, [dispatch]);
 
+  const handleOnModalOutsideClick = useCallback(() => {
+    dispatch({ name: "setIsModalVisible", payload: false });
+  }, [dispatch]);
+
+  const handleOnRemoveBtnClick = useCallback(() => {
+    if (!states.currentDocument) return;
+    dispatch({ name: "setIsModalVisible", payload: true });
+  }, [states.currentDocument]);
+
+  const removeDocument = useCallback(() => {
+    dispatch({ name: "removeDocument", payload: true });
+  }, [dispatch]);
+
   return (
-    <div className={`app-view ${states.isSidebarVisible ? "sv" : "si"} `}>
-      <Sidebar
-        docs={states.documents}
-        onLinkClick={toggleSidebarCallback}
-        onNewDocumentClick={handleOnNewDocumentClick}
-      />
-      <div className="content">
-        <AppHeader
-          currentDocument={states.currentDocument}
-          isSidebarVisible={states.isSidebarVisible}
-          existingDocsNames={states.documents.map((doc) => doc.name)}
-          onToggle={toggleSidebarCallback}
-          onValidFileName={handleOnFileNameChange}
-          onSaveBtnClick={handleOnSaveBtnClick}
+    <>
+      {states.isModalVisible && states.currentDocument ? (
+        <Modal
+          title="Delete this document?"
+          text={`Are you sure you want to delete the ‘${states.currentDocument.name}’ document and its contents? This action cannot be reversed.`}
+          buttonProps={{ text: "Confirm & Delete", onClick: removeDocument }}
+          onOutsideClick={handleOnModalOutsideClick}
         />
-        {states.currentDocument ? (
-          <div className="main-wrapper" ref={mainWrapperRef}>
-            <EditorWindow
-              ref={editorContentRef}
-              defContent={states.currentDocument.content}
-              onContentChange={handleOnEditorContentChange}
-              onHeaderBtnClick={addClassPreviewOnly}
-            />
-            <div className="separator"></div>
-            <PreviewWindow
-              content={states.currentDocumentTempContent}
-              onHeaderBtnClick={() => {
-                if (states.previewOnly) removeClassPreviewOnly();
-                else addClassPreviewOnly();
-              }}
-              buttonEvent={
-                states.previewOnly ? "close-preview" : "only-preview"
-              }
-            />
-          </div>
-        ) : (
-          <div>Document not found!</div>
-        )}
+      ) : undefined}
+      <div className={`app-view ${states.isSidebarVisible ? "sv" : "si"} `}>
+        <Sidebar
+          docs={states.documents}
+          onLinkClick={toggleSidebarCallback}
+          onNewDocumentClick={handleOnNewDocumentClick}
+        />
+        <div className="content">
+          <AppHeader
+            currentDocument={states.currentDocument}
+            isSidebarVisible={states.isSidebarVisible}
+            existingDocsNames={states.documents.map((doc) => doc.name)}
+            onToggle={toggleSidebarCallback}
+            onValidFileName={handleOnFileNameChange}
+            onSaveBtnClick={handleOnSaveBtnClick}
+            onRemoveBtnClick={handleOnRemoveBtnClick}
+          />
+          {states.currentDocument ? (
+            <div className="main-wrapper" ref={mainWrapperRef}>
+              <EditorWindow
+                ref={editorContentRef}
+                defContent={states.currentDocument.content}
+                onContentChange={handleOnEditorContentChange}
+                onHeaderBtnClick={addClassPreviewOnly}
+              />
+              <div className="separator"></div>
+              <PreviewWindow
+                content={states.currentDocumentTempContent}
+                onHeaderBtnClick={() => {
+                  if (states.previewOnly) removeClassPreviewOnly();
+                  else addClassPreviewOnly();
+                }}
+                buttonEvent={
+                  states.previewOnly ? "close-preview" : "only-preview"
+                }
+              />
+            </div>
+          ) : (
+            <div>Document not found!</div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

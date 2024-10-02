@@ -1,0 +1,57 @@
+.modal-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-modal-ligth);
+  transition: background-color 0.1s ease-in;
+  padding: 24px;
+}
+
+.modal {
+  transition: background-color 0.1s ease-in;
+  background-color: var(--color-100);
+  max-width: 343px;
+  display: grid;
+  gap: 12px;
+  padding: 24px;
+  border-radius: 4px;
+}
+
+.modal h2,
+.modal p {
+  transition: color 0.1s ease-in;
+  margin: 0;
+}
+
+.modal h2 {
+  color: var(--color-1000);
+}
+
+.modal p {
+  color: var(--color-500);
+}
+
+html.dark .modal-wrapper {
+  background-color: var(--color-modal-dark);
+}
+
+html.dark .modal {
+  background-color: var(--color-900);
+}
+
+html.dark .modal h2 {
+  color: var(--color-100);
+}
+
+html.dark .modal p {
+  color: var(--color-400);
+}
+
+@media screen and (min-width: 768px) {
+  .modal {
+    max-width: 375px;
+  }
+}

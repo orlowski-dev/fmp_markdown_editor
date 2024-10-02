@@ -12,4 +12,6 @@
   --color-orange: #e46643;
   --color-orange-hover: #f39765;
   --color-alert: #e44343;
+  --color-modal-light: rgba(21, 22, 25, 0.5);
+  --color-modal-dark: rgba(124, 129, 135, 0.5);
 }

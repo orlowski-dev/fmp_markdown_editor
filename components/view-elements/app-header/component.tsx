@@ -19,6 +19,7 @@ export interface AppHeaderProps {
   onValidFileName: (fileName: string) => void;
   onSaveBtnClick: () => void;
   onToggle: () => void;
+  onRemoveBtnClick: () => void;
 }
 
 const AppHeader = ({
@@ -28,6 +29,7 @@ const AppHeader = ({
   onValidFileName,
   onSaveBtnClick,
   onToggle,
+  onRemoveBtnClick,
 }: AppHeaderProps) => {
   return (
     <header className="app-header">
@@ -54,6 +56,7 @@ const AppHeader = ({
           startIcon={<TrashIcon />}
           style={{ color: "var(--color-500)" }}
           title="Delete document"
+          onClick={onRemoveBtnClick}
         >
           Remove document
         </Button>
