@@ -7,9 +7,10 @@ import "./styles.css";
 
 export interface SidebarProps {
   docs: MdDocument[];
+  onLinkClick: () => void;
 }
 
-const Sidebar = ({ docs }: SidebarProps) => {
+const Sidebar = ({ docs, onLinkClick }: SidebarProps) => {
   return (
     <div className="sidebar">
       <div className="logo-area">
@@ -21,7 +22,12 @@ const Sidebar = ({ docs }: SidebarProps) => {
         <div className="docs-area">
           {docs.map((doc) => {
             return (
-              <Link key={doc.id} href={`/?doc=${doc.id}`} className="doc">
+              <Link
+                onClick={onLinkClick}
+                key={doc.id}
+                href={`/?doc=${doc.id}`}
+                className="doc"
+              >
                 <span className="icon">
                   <FileIcon />
                 </span>

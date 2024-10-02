@@ -1,4 +1,5 @@
-.editor-textarea {
+.editor-textarea,
+.no-content {
   border: none;
   margin: 0;
   resize: none;

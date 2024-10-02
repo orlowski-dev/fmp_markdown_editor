@@ -10,8 +10,9 @@ export function useLocalStorage<T>(key: string, defValue: T) {
 
   // on value update
   useEffect(() => {
+    if (value === defValue) return;
     localStorage.setItem(key, JSON.stringify(value));
-  }, [value, key]);
+  }, [value, key, defValue]);
 
   return { value, setValue };
 }

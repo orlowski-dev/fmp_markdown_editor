@@ -10,13 +10,21 @@ import {
 import "./styles.css";
 import { FileRenamer } from "@/components/file-renamer";
 import { Button } from "@/components/button";
+import { MdDocument } from "@/data/types";
 
 export interface AppHeaderProps {
   isSidebarVisible: boolean;
   onToggle: () => void;
+  currentDocument: MdDocument | undefined;
+  onValidFileName: (fileName: string) => void;
 }
 
-const AppHeader = ({ isSidebarVisible, onToggle }: AppHeaderProps) => {
+const AppHeader = ({
+  isSidebarVisible,
+  onToggle,
+  currentDocument,
+  onValidFileName,
+}: AppHeaderProps) => {
   return (
     <header className="app-header">
       <div className="left">
@@ -27,7 +35,12 @@ const AppHeader = ({ isSidebarVisible, onToggle }: AppHeaderProps) => {
           <Logo />
         </div>
         <div className="div separator"></div>
-        <FileRenamer onValidFileName={() => {}} defValue="New document.md" />
+        {currentDocument ? (
+          <FileRenamer
+            onValidFileName={onValidFileName}
+            defValue={currentDocument.name}
+          />
+        ) : undefined}
       </div>
       <div className="right">
         <Button
