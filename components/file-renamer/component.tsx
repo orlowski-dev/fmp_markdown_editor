@@ -1,7 +1,7 @@
 "use client";
 
 import { FileIcon } from "@/components/icons";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./styles.css";
 
 export interface FileRenamerProps {
@@ -12,14 +12,21 @@ export interface FileRenamerProps {
 const FileRenamer = ({ defValue, onValidFileName }: FileRenamerProps) => {
   const [isInputValid, setIsInputValid] = useState(true);
   const inpRef = useRef<HTMLInputElement>(null);
+  const [inpValue, setInpValue] = useState(defValue);
+
+  useEffect(() => {
+    setInpValue(defValue);
+  }, [defValue]);
 
   const checkIsInputValid = (value: string) => {
-    if (!RegExp("^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,30}.md$").test(value)) {
-      setIsInputValid(false);
-      return;
-    }
+    const valid = RegExp("^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,30}.md$").test(value);
+    setIsInputValid(valid);
+    return valid;
+  };
 
-    setIsInputValid(true);
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInpValue(e.target.value);
+    checkIsInputValid(e.target.value);
   };
 
   return (
@@ -34,16 +41,16 @@ const FileRenamer = ({ defValue, onValidFileName }: FileRenamerProps) => {
           id="file-rename"
           ref={inpRef}
           className={!isInputValid ? "invalid" : "valid"}
-          defaultValue={defValue}
+          value={inpValue}
           onBlur={(e) => {
-            if (isInputValid) onValidFileName(e.target.value);
+            if (checkIsInputValid(e.target.value)) {
+              onValidFileName(e.target.value);
+            }
           }}
-          onChange={(e) => checkIsInputValid(e.target.value)}
+          onChange={handleOnChange}
           onKeyUp={(e) => {
             if (!inpRef.current) return;
             if (e.key == "Enter") {
-              if (!isInputValid) return;
-              onValidFileName(inpRef.current.value);
               inpRef.current.blur();
             }
           }}

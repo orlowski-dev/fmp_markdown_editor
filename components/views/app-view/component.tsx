@@ -9,6 +9,7 @@ import { useLocalStorage } from "@/hooks";
 import { welcomeDocs } from "@/data/def-data";
 import { useSearchParams } from "next/navigation";
 import "./styles.css";
+import { MdDocument } from "@/data/types";
 
 const AppView = () => {
   const spDocId = useSearchParams().get("doc");
@@ -20,25 +21,41 @@ const AppView = () => {
   });
   const editorContentRef = useRef<HTMLTextAreaElement>(null);
   const mainWrapperRef = useRef<HTMLDivElement>(null);
-  const { value } = useLocalStorage("docs", welcomeDocs);
+  const { isReady, value, setValue } = useLocalStorage("docs", welcomeDocs);
 
-  // set states.document on localStorage load
+  // ! this ref keeps track of the last value of states.documents to avoiding calling setValue if the value has not changed
+  // this prevent unnecessary useEffect run and avoid the loop
+  const lastDocumentsRef = useRef<MdDocument[] | undefined>(undefined);
+
   useEffect(() => {
-    dispatch({ name: "setDocuments", payloadSet: value });
-  }, [states.documents, value]);
+    // set states.document on localStorage load
+    if (isReady && !lastDocumentsRef.current) {
+      dispatch({ name: "setDocuments", payloadSet: value });
+      lastDocumentsRef.current = states.documents;
+      return;
+    }
+
+    // update localStorage on states.documents change
+    if (
+      isReady &&
+      lastDocumentsRef.current &&
+      lastDocumentsRef.current !== states.documents
+    ) {
+      setValue(states.documents);
+      lastDocumentsRef.current = states.documents;
+    }
+  }, [states.documents, value, isReady, setValue]);
 
   // set current document
   useEffect(() => {
-    if (!spDocId) return;
-    dispatch({ name: "setCurrentDocument", payloadSetId: spDocId });
-  }, [spDocId]);
-
-  // set current document when no searchparams were provided
-  useEffect(() => {
-    if (value && !spDocId) {
-      dispatch({ name: "setCurrentDocument", payloadSetId: 0 });
+    if (isReady && spDocId) {
+      dispatch({ name: "setCurrentDocument", payload: spDocId });
+      return;
     }
-  }, [spDocId, value]);
+    if (isReady && !spDocId && value) {
+      dispatch({ name: "setCurrentDocument", payload: 0 });
+    }
+  }, [spDocId, isReady, value]);
 
   const toggleSidebarCallback = useCallback(() => {
     dispatch({
@@ -61,6 +78,13 @@ const AppView = () => {
     dispatch({ name: "setPreviewOnly", payloadSet: false });
   };
 
+  const onFileNameChange = useCallback(
+    (fileName: string) => {
+      dispatch({ name: "setCurrentDocumentName", payload: fileName });
+    },
+    [dispatch],
+  );
+
   return (
     <div className={`app-view ${states.isSidebarVisible ? "sv" : "si"} `}>
       <Sidebar docs={states.documents} onLinkClick={toggleSidebarCallback} />
@@ -68,7 +92,7 @@ const AppView = () => {
         <AppHeader
           currentDocument={states.currentDocument}
           onToggle={toggleSidebarCallback}
-          onValidFileName={() => {}}
+          onValidFileName={onFileNameChange}
           isSidebarVisible={states.isSidebarVisible}
         />
         {states.currentDocument ? (

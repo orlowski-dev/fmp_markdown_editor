@@ -12,9 +12,14 @@ type BooleanTypeActions = {
   payloadSet: boolean;
 };
 
-type MdCurrentDocumentActions = {
+type MdCurrentDocumentAction = {
   name: "setCurrentDocument";
-  payloadSetId: number | string;
+  payload: number | string;
+};
+
+type MdSetCurrentDocumentNameAction = {
+  name: "setCurrentDocumentName";
+  payload: string;
 };
 
 type MdDocumentsActions = {
@@ -25,7 +30,8 @@ type MdDocumentsActions = {
 type AppViewReducerActions =
   | BooleanTypeActions
   | MdDocumentsActions
-  | MdCurrentDocumentActions;
+  | MdCurrentDocumentAction
+  | MdSetCurrentDocumentNameAction;
 
 const appViewReducer = (
   states: AppViewReducerStates,
@@ -42,17 +48,45 @@ const appViewReducer = (
       try {
         //find document by id
         const doc = states.documents.find(
-          (elem) => elem.id === Number(action.payloadSetId),
+          (elem) => elem.id === Number(action.payload),
         );
         if (!doc) {
           console.error("document with given id does not exist in the reducer");
           return states;
         }
         return { ...states, currentDocument: doc };
-      } catch {
-        console.error("cannot parse an id.");
+      } catch (err) {
+        console.error(err);
         return states;
       }
+    case "setCurrentDocumentName":
+      if (!states.documents[0]) {
+        throw new Error("Documenst array is empty");
+      }
+      if (!states.currentDocument) {
+        throw new Error("Current document does not exist in the reducer");
+      }
+
+      if (states.currentDocument.name === action.payload) {
+        console.log("file name did not changed");
+        return states;
+      }
+
+      // update all docs
+      const updatedDocs: MdDocument[] = states.documents.map((elem) => {
+        if (elem.id === states.currentDocument!.id) {
+          return { ...elem, name: action.payload };
+        } else {
+          return elem;
+        }
+      });
+
+      return {
+        ...states,
+        documents: updatedDocs,
+        currentDocument: { ...states.currentDocument, name: action.payload },
+      };
+
     default:
       return states;
   }
