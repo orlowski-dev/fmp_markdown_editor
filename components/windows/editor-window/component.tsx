@@ -28,19 +28,15 @@ const EditorWindow = forwardRef(function EditorWindow(
       windowClassName="editor-window"
       headerButton={<button onClick={onHeaderBtnClick}>{<EyeIcon />}</button>}
     >
-      {!inpValue ? (
-        <div className="no-content">Loading document..</div>
-      ) : (
-        <textarea
-          className="editor-textarea"
-          ref={ref}
-          value={inpValue}
-          onChange={(e) => {
-            setInpValue(e.target.value);
-            onContentChange(e.target.value);
-          }}
-        ></textarea>
-      )}
+      <textarea
+        className="editor-textarea"
+        ref={ref}
+        value={inpValue ?? ""}
+        onChange={(e) => {
+          setInpValue(e.target.value);
+          onContentChange(e.target.value);
+        }}
+      ></textarea>
     </Window>
   );
 });

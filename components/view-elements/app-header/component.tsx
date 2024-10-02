@@ -14,18 +14,20 @@ import { MdDocument } from "@/data/types";
 
 export interface AppHeaderProps {
   isSidebarVisible: boolean;
-  onToggle: () => void;
   currentDocument: MdDocument | undefined;
+  existingDocsNames: string[];
   onValidFileName: (fileName: string) => void;
   onSaveBtnClick: () => void;
+  onToggle: () => void;
 }
 
 const AppHeader = ({
   isSidebarVisible,
-  onToggle,
   currentDocument,
+  existingDocsNames,
   onValidFileName,
   onSaveBtnClick,
+  onToggle,
 }: AppHeaderProps) => {
   return (
     <header className="app-header">
@@ -40,6 +42,7 @@ const AppHeader = ({
         {currentDocument ? (
           <FileRenamer
             onValidFileName={onValidFileName}
+            invalidNames={existingDocsNames}
             defValue={currentDocument.name}
           />
         ) : undefined}

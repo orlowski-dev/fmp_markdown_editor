@@ -6,10 +6,15 @@ import "./styles.css";
 
 export interface FileRenamerProps {
   defValue: string;
+  invalidNames: string[];
   onValidFileName: (fileName: string) => void;
 }
 
-const FileRenamer = ({ defValue, onValidFileName }: FileRenamerProps) => {
+const FileRenamer = ({
+  defValue,
+  onValidFileName,
+  invalidNames,
+}: FileRenamerProps) => {
   const [isInputValid, setIsInputValid] = useState(true);
   const inpRef = useRef<HTMLInputElement>(null);
   const [inpValue, setInpValue] = useState(defValue);
@@ -19,7 +24,11 @@ const FileRenamer = ({ defValue, onValidFileName }: FileRenamerProps) => {
   }, [defValue]);
 
   const checkIsInputValid = (value: string) => {
-    const valid = RegExp("^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,30}.md$").test(value);
+    const validName = RegExp("^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,30}.md$").test(
+      value,
+    );
+    const uniqueName = !invalidNames.includes(value);
+    const valid = validName && uniqueName;
     setIsInputValid(valid);
     return valid;
   };

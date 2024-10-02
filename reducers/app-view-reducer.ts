@@ -19,7 +19,10 @@ type NumberActions = {
 };
 
 type StringActions = {
-  name: "setCurrentDocumentName" | "setDocumentTempContent";
+  name:
+    | "setCurrentDocumentName"
+    | "setDocumentTempContent"
+    | "createNewDocument";
   payload: string;
 };
 
@@ -39,6 +42,35 @@ type AppViewReducerActions =
   | StringActions
   | ActionsWithoutPayload;
 
+type KeyOf<T> = keyof T;
+
+function updateArray<Arr extends object, CompareValue, NewValue>(
+  arr: Arr[],
+  toCompare: { elemKey: KeyOf<Arr>; value: CompareValue },
+  toChange: { elemKey: KeyOf<Arr>; value: NewValue },
+): Arr[] {
+  if (!arr[0]) {
+    throw new Error("Array is empty. Cannot update.");
+  }
+
+  return arr.map((elem) => {
+    if (elem[toCompare.elemKey] === toCompare.value) {
+      return { ...elem, [toChange.elemKey]: toChange.value };
+    }
+    return elem;
+  });
+}
+
+function sortDocs(arr: MdDocument[]): MdDocument[] {
+  if (!arr[0]) {
+    throw new Error("Array is empty!");
+  }
+
+  return arr.sort((a, b) => {
+    return b.id - a.id;
+  });
+}
+
 const appViewReducer = (
   states: AppViewReducerStates,
   action: AppViewReducerActions,
@@ -49,7 +81,7 @@ const appViewReducer = (
     case "setPreviewOnly":
       return { ...states, previewOnly: action.payload };
     case "setDocuments":
-      return { ...states, documents: action.payload };
+      return { ...states, documents: sortDocs(action.payload) };
     case "setCurrentDocument":
       if (isNaN(action.payload)) {
         console.error("invalid document id");
@@ -95,11 +127,6 @@ const appViewReducer = (
         throw new Error("Current document is undefined!");
       }
 
-      if (states.currentDocument.content === action.payload) {
-        console.log("Document content did not change");
-        return states;
-      }
-
       return {
         ...states,
         documents: updateArray(
@@ -109,28 +136,44 @@ const appViewReducer = (
         ),
       };
 
+    case "createNewDocument":
+      if (states.documents.length == 0) {
+        throw new Error("Documents array is empty!");
+      }
+      // check if document with given name already exists
+      const nameWithoutExt = action.payload.split(".")[0];
+
+      const docsWithTheSameName = states.documents.filter((doc) =>
+        doc.name.startsWith(nameWithoutExt),
+      );
+
+      const docName =
+        docsWithTheSameName.length > 0
+          ? `${nameWithoutExt} (${docsWithTheSameName.length}).md`
+          : action.payload;
+
+      const lastId = states.documents.reduce(
+        (max, elem) => (elem.id > max ? elem.id : max),
+        0,
+      );
+
+      const date = new Date();
+      const today = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+
+      const newDoc: MdDocument = {
+        id: lastId + 1,
+        name: docName,
+        createdAt: today,
+        content: "",
+      };
+
+      const updatedDocs = [newDoc, ...states.documents];
+
+      return { ...states, documents: updatedDocs, currentDocument: newDoc };
+
     default:
       return states;
   }
 };
-
-type KeyOf<T> = keyof T;
-
-function updateArray<Arr extends object, CompareValue, NewValue>(
-  arr: Arr[],
-  toCompare: { elemKey: KeyOf<Arr>; value: CompareValue },
-  toChange: { elemKey: KeyOf<Arr>; value: NewValue },
-): Arr[] {
-  if (!arr[0]) {
-    throw new Error("Array is empty. Cannot update.");
-  }
-
-  return arr.map((elem) => {
-    if (elem[toCompare.elemKey] === toCompare.value) {
-      return { ...elem, [toChange.elemKey]: toChange.value };
-    }
-    return elem;
-  });
-}
 
 export default appViewReducer;

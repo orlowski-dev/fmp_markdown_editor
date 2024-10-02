@@ -8,8 +8,8 @@ import { appViewReducer } from "@/reducers";
 import { useLocalStorage } from "@/hooks";
 import { welcomeDocs } from "@/data/def-data";
 import { useSearchParams } from "next/navigation";
-import "./styles.css";
 import { MdDocument } from "@/data/types";
+import "./styles.css";
 
 const AppView = () => {
   const spDocId = useSearchParams().get("doc");
@@ -97,15 +97,24 @@ const AppView = () => {
     dispatch({ name: "saveDocumentTempContent" });
   }, [dispatch]);
 
+  const handleOnNewDocumentClick = useCallback(() => {
+    dispatch({ name: "createNewDocument", payload: "New document.md" });
+  }, [dispatch]);
+
   return (
     <div className={`app-view ${states.isSidebarVisible ? "sv" : "si"} `}>
-      <Sidebar docs={states.documents} onLinkClick={toggleSidebarCallback} />
+      <Sidebar
+        docs={states.documents}
+        onLinkClick={toggleSidebarCallback}
+        onNewDocumentClick={handleOnNewDocumentClick}
+      />
       <div className="content">
         <AppHeader
           currentDocument={states.currentDocument}
+          isSidebarVisible={states.isSidebarVisible}
+          existingDocsNames={states.documents.map((doc) => doc.name)}
           onToggle={toggleSidebarCallback}
           onValidFileName={handleOnFileNameChange}
-          isSidebarVisible={states.isSidebarVisible}
           onSaveBtnClick={handleOnSaveBtnClick}
         />
         {states.currentDocument ? (

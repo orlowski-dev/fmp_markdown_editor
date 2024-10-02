@@ -1,23 +1,24 @@
 import { FileIcon, Logo } from "@/components/icons";
 import { ThemeToggler } from "@/components/theme-toggler";
 import { Button } from "@/components/button";
-import Link from "next/link";
 import { MdDocument } from "@/data/types";
+import Link from "next/link";
 import "./styles.css";
 
 export interface SidebarProps {
   docs: MdDocument[];
   onLinkClick: () => void;
+  onNewDocumentClick: () => void;
 }
 
-const Sidebar = ({ docs, onLinkClick }: SidebarProps) => {
+const Sidebar = ({ docs, onLinkClick, onNewDocumentClick }: SidebarProps) => {
   return (
     <div className="sidebar">
       <div className="logo-area">
         <Logo />
       </div>
       <h2>My documents</h2>
-      <Button>+ New document</Button>
+      <Button onClick={onNewDocumentClick}>+ New document</Button>
       <div className="docs-area-wrapper">
         <div className="docs-area">
           {docs.map((doc) => {
