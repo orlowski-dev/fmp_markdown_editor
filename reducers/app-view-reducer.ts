@@ -68,7 +68,7 @@ function updateArray<Arr extends object, CompareValue, NewValue>(
 
 function sortDocs(arr: MdDocument[]): MdDocument[] {
   if (!arr[0]) {
-    throw new Error("Array is empty!");
+    return arr;
   }
 
   return arr.sort((a, b) => {
@@ -142,9 +142,19 @@ const appViewReducer = (
       };
 
     case "createNewDocument":
+      const date = new Date();
+      const today = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+
       if (states.documents.length == 0) {
-        throw new Error("Documents array is empty!");
+        const newDoc: MdDocument = {
+          id: 0,
+          name: action.payload,
+          createdAt: today,
+          content: "",
+        };
+        return { ...states, documents: [newDoc] };
       }
+
       // check if document with given name already exists
       const nameWithoutExt = action.payload.split(".")[0];
 
@@ -161,9 +171,6 @@ const appViewReducer = (
         (max, elem) => (elem.id > max ? elem.id : max),
         0,
       );
-
-      const date = new Date();
-      const today = `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
 
       const newDoc: MdDocument = {
         id: lastId + 1,
