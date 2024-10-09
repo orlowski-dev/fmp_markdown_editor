@@ -1,4 +1,123 @@
-.preview-wrapper .preview {
+.preview-wrapper {
+  width: 100%;
   max-width: 1000px;
   margin: 0 auto;
+  position: relative;
+}
+
+.preview-wrapper .preview {
+  padding: 20px;
+  padding-top: 0;
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+}
+
+.preview * {
+  font-family: var(--roboto-slab);
+  margin: 20px 0;
+  transition-duration: 0.1s;
+  transition-timing-function: ease-in;
+}
+
+.preview :is(h1, h2, h3, h4, h5) {
+  transition-property: color;
+  color: var(--color-700);
+}
+
+.preview h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.preview :is(p, li) {
+  transition-property: color;
+  color: var(--color-500);
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+}
+
+.preview li {
+  margin: 12px 0;
+}
+
+.preview ul li {
+  list-style-type: disc;
+}
+
+.preview ul li::marker {
+  color: var(--color-orange);
+}
+
+.preview h2 {
+  font-size: 1.75rem;
+  font-weight: 300;
+}
+
+.preview h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.preview h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.preview h5 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.preview h6 {
+  font-size: 0.875rem;
+  color: var(--color-orange);
+}
+
+.preview blockquote,
+.preview pre {
+  transition-property: background-color;
+  padding: 20px;
+  background-color: var(--color-200);
+  border-radius: 4px;
+  border-left: 4px solid var(--color-orange);
+}
+
+.preview pre {
+  border-left: none;
+}
+
+.preview blockquote p {
+  transition-property: color;
+  margin: 0;
+  color: var(--color-700);
+  font-weight: 700;
+}
+
+.preview blockquote p a {
+  transition-property: color;
+  color: var(--color-700);
+}
+
+.preview code {
+  font-family: var(--roboto-mono), monospace;
+  font-size: 0.875rem;
+}
+
+html.dark .preview :is(h1, h2, h3, h4, h5) {
+  color: var(--color-100);
+}
+
+html.dark .preview :is(p, li) {
+  color: var(--color-400);
+}
+
+html.dark .preview blockquote,
+html.dark .preview pre {
+  background-color: var(--color-700);
+}
+
+html.dark .preview blockquote p,
+html.dark .preview blockquote p a {
+  color: var(--color-100);
 }

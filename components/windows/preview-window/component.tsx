@@ -2,7 +2,10 @@
 
 import { EyeCloseIcon, EyeIcon } from "@/components/icons";
 import { Window } from "@/components/windows";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import "./styles.css";
+import "highlight.js/styles/github-dark.css";
 
 export interface PreviewWindowProps {
   onHeaderBtnClick: () => void;
@@ -26,7 +29,11 @@ const PreviewWindow = ({
       }
     >
       <div className="preview-wrapper">
-        {content ? <div className="preview">{content}</div> : undefined}
+        {content ? (
+          <div className="preview">
+            <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
+          </div>
+        ) : undefined}
       </div>
     </Window>
   );

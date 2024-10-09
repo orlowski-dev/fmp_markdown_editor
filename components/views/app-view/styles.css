@@ -51,7 +51,7 @@ body {
 }
 
 .main-wrapper.only-preview .preview-window {
-  display: unset;
+  display: grid;
 }
 
 html.dark .app-view .content .main-wrapper .separator {
@@ -69,6 +69,6 @@ html.dark .app-view .content .main-wrapper .separator {
 
   .main-wrapper .separator,
   .main-wrapper .preview-window {
-    display: unset;
+    display: grid;
   }
 }
