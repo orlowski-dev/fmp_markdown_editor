@@ -1,0 +1,11 @@
+.no-doc-section {
+  display: flex;
+  flex-flow: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-doc-section * {
+  margin: 0;
+}

@@ -10,6 +10,7 @@ import { welcomeDocs } from "@/data/def-data";
 import { useSearchParams } from "next/navigation";
 import { MdDocument } from "@/data/types";
 import { Modal } from "@/components/modal";
+import NoDocSection from "@/components/view-elements/no-doc-section/component";
 import "./styles.css";
 
 const AppView = () => {
@@ -163,7 +164,12 @@ const AppView = () => {
               />
             </div>
           ) : (
-            <div>Document not found!</div>
+            <NoDocSection
+              title={"Document not found."}
+              description={
+                "Open an existing document from the sidebar or create a new one."
+              }
+            />
           )}
         </div>
       </div>
