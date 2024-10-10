@@ -10,7 +10,7 @@ import { welcomeDocs } from "@/data/def-data";
 import { useSearchParams } from "next/navigation";
 import { MdDocument } from "@/data/types";
 import { Modal } from "@/components/modal";
-import NoDocSection from "@/components/view-elements/no-doc-section/component";
+import { NoDocSection } from "@/components/view-elements";
 import "./styles.css";
 
 const AppView = () => {
